@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="neon">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CloudVault & ContextVault — by Surya</title>
+    <meta
+      name="description"
+      content="CloudVault & ContextVault — self-hosted, offline-first context storage with wrapper PNGs, QR codes, and a minimal SaaS bridge. By Surya."
+    />
+    <link rel="icon" href="assets/logo.svg" />
+    <meta property="og:title" content="CloudVault & ContextVault — by Surya" />
+    <meta
+      property="og:description"
+      content="Self-hosted, offline-first context storage with wrapper PNGs & QR integration."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="assets/logo.svg" />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <style>
+      /* tiny inline safety for no-Flash */
+      body {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="container site-header">
+      <div class="brand">
+        <img src="assets/logo.svg" alt="CloudVault logo" class="logo" />
+        <div class="brand-text">
+          <h1>CloudVault <span class="amp">&</span> ContextVault</h1>
+          <p class="tagline">
+            Self-hosted, offline-first context storage with wrapper PNGs & QR.
+          </p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#features">Features</a>
+        <a href="#install">Install</a>
+        <a href="#api">API</a>
+        <a href="#author">Author</a>
+        <a
+          class="btn btn--solid"
+          href="https://github.com/yourname/cloudvault"
+          target="_blank"
+          rel="noopener"
+          >GitHub</a
+        >
+      </nav>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero container">
+        <div class="hero-copy">
+          <h2>Wrapper PNGs that actually open, and still carry context.</h2>
+          <p>
+            CloudVault (SaaS bridge) + ContextVault (canonical store) let you
+            generate truly viewable PNG wrappers with embedded signed locators
+            and QR codes — easy to share, trivial to verify, and simple to
+            resolve.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn--solid" href="#install">Get Started</a>
+            <a class="btn btn--ghost" href="#features">See Features</a>
+          </div>
+          <div class="meta">
+            <span class="chip">Open Source</span>
+            <span class="chip">FastAPI + React</span>
+            <span class="chip">Pillow · QR</span>
+          </div>
+        </div>
+        <div class="hero-art">
+          <!-- simple mock “card” -->
+          <div class="card">
+            <div class="card-title">Wrapper PNG</div>
+            <div class="card-body">
+              <div class="qr-skel"></div>
+              <div class="lines">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div class="short"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURES -->
+      <section id="features" class="container section">
+        <h3 class="section-title">Features</h3>
+        <div class="grid features">
+          <div class="feature">
+            <h4>✅ Real PNGs</h4>
+            <p>
+              Wrappers are valid PNGs that open in Paint/browsers. Locator JSON
+              lives in <code>iTXt</code>, with a visible QR overlay.
+            </p>
+          </div>
+          <div class="feature">
+            <h4>🔐 Signed Locators</h4>
+            <p>
+              Short-lived HMAC tokens (base64url) with expiry & nonce. No
+              secrets leak — just resolvable identifiers.
+            </p>
+          </div>
+          <div class="feature">
+            <h4>⚡ Minimal APIs</h4>
+            <p>
+              FastAPI endpoints to create contexts, download wrappers, and
+              resolve back to canonical <code>.png.enc</code>.
+            </p>
+          </div>
+          <div class="feature">
+            <h4>🧪 Simple UI</h4>
+            <p>
+              Frontend includes upload, list, rename, wrapper download, and
+              QR-based resolve. Works offline-first.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- INSTALL -->
+      <section id="install" class="container section">
+        <h3 class="section-title">Install & Run</h3>
+
+        <div class="install-grid">
+          <div class="card">
+            <div class="card-title">Backend (FastAPI)</div>
+            <pre class="code">
+# Create venv & install
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -U pip
+
+# from source repo
+pip install -e .
+
+# run
+uvicorn cloud.app.main:app --host 0.0.0.0 --port 8000 --reload
+        </pre
+            >
+          </div>
+          <div class="card">
+            <div class="card-title">Frontend (Vite React)</div>
+            <pre class="code">
+cd frontend
+npm i
+npm run dev
+# Open http://127.0.0.1:5173
+        </pre
+            >
+          </div>
+          <div class="card">
+            <div class="card-title">PyPI (SaaS helper)</div>
+            <pre class="code">
+# If you published as cloudvault-sai (example)
+pip install cloudvault-sai
+python -c "import cloud; print(cloud.__version__)"
+        </pre
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- API -->
+      <section id="api" class="container section">
+        <h3 class="section-title">Key API Endpoints</h3>
+        <div class="grid apis">
+          <div class="api">
+            <h4>POST /auth/signup</h4>
+            <p>
+              Returns <code>access_token</code> to use as <code>Bearer</code>.
+            </p>
+          </div>
+          <div class="api">
+            <h4>POST /api/contexts</h4>
+            <p>Multipart upload of one/more files → creates a context.</p>
+          </div>
+          <div class="api">
+            <h4>GET /wrappers/api/contexts/{id}/wrapper</h4>
+            <p>Returns a real PNG wrapper with QR + embedded locator.</p>
+          </div>
+          <div class="api">
+            <h4>POST /wrappers/api/contexts/resolve-from-wrapper</h4>
+            <p>
+              Upload wrapper PNG or JSON locator → returns
+              <code>context_id</code> and <code>enc_url</code>.
+            </p>
+          </div>
+        </div>
+        <p class="note">
+          Full docs coming soon. See code for examples and a working test
+          PowerShell script.
+        </p>
+      </section>
+
+      <!-- AUTHOR -->
+      <section id="author" class="container section">
+        <h3 class="section-title">About the Author</h3>
+        <div class="author">
+          <div class="me">
+            <div class="avatar">S</div>
+            <div>
+              <h4>Surya</h4>
+              <p>
+                Builder of offline-first systems, pragmatic API design, and neon
+                UIs. I ship.
+              </p>
+              <div class="links">
+                <a href="mailto:you@example.com">Email</a>
+                <a
+                  href="https://github.com/yourname"
+                  target="_blank"
+                  rel="noopener"
+                  >GitHub</a
+                >
+                <a
+                  href="https://www.linkedin.com/in/yourname"
+                  target="_blank"
+                  rel="noopener"
+                  >LinkedIn</a
+                >
+              </div>
+            </div>
+          </div>
+          <div class="newsletter">
+            <p>
+              <strong>Follow progress</strong> — occasional releases & tips.
+            </p>
+            <form
+              action="https://buttondown.email/api/emails/embed-subscribe/YOUR_ID"
+              method="post"
+              target="_blank"
+            >
+              <input
+                type="email"
+                name="email"
+                placeholder="you@company.com"
+                required
+              />
+              <button class="btn btn--solid" type="submit">Subscribe</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="container site-footer">
+      <div>© <span id="year"></span> Surya — All rights reserved.</div>
+      <div class="tiny">Made with FastAPI, React & a silly amount of neon.</div>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
