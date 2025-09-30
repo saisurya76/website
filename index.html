@@ -85,7 +85,7 @@
           <div class="card">
             <div class="card-title">Wrapper PNG</div>
             <div class="card-body">
-              <div class="qr-skel"></div>
+              <canvas id="qr"></canvas>
               <div class="lines">
                 <div></div>
                 <div></div>
@@ -268,3 +268,14 @@ python -c "import cloud; print(cloud.__version__)"
     </script>
   </body>
 </html>
+
+<script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
+<script>
+  new QRious({
+    element: document.getElementById("qr"),
+    value: "https://cloudvault.local/wrappers/resolve?demo=true",
+    size: 120,
+    background: "transparent",
+    foreground: "#00e6e6",
+  });
+</script>
