@@ -63,3 +63,21 @@ a{color:var(--accent)}
   .author{grid-template-columns:1fr}
   .nav{display:none}
 }
+
+.avatar {
+  width: 60px;        /* Adjust size as needed */
+  height: 60px;
+  border-radius: 50%; /* Keeps it circular */
+  overflow: hidden;   /* Ensures image doesn’t spill */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #222;   /* fallback background if no image */
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* Ensures image scales & crops properly */
+  display: block;
+}
